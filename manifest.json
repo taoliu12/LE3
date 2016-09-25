@@ -1,3 +1,19 @@
 {
-  
+  "manifest_version": 2,
+  "name": "LE3",
+  "description": "The Learn Expert Enhancement Extension, or LE3 provides additional features to learn experts to aid in productivity.",
+  "icons": {"48": "images/icon48.png"},
+  "author": "https://github.com/nstephenson",
+  "version": "0.1",
+  "content_scripts": [
+    {
+      "matches": ["https://learn.co/expert-chat"],
+      "js": ["LearnExpertTabs/js/expertTabs.js"],
+      "css": ["LearnExpertTabs/stylesheets/expert_tabs.css"]
+    }
+  ],
+  "browser_action": {
+    "default_icon": "images/icon38.png",
+    "default_popup": "index.html"
+  }
 }
