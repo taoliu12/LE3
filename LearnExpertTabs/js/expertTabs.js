@@ -149,6 +149,7 @@ function createTab(studentQuestion){
   let tabElement = document.querySelector('#chat-tab-bar').lastChild;
   attachTabListener(tabs);
   checkChatStatus(studentQuestion, tabElement);
+  addUnrespondedObserverToChatNode(studentQuestion.chatNode)
 }
 
 function buildTabHtml(studentQuestion){
@@ -159,7 +160,7 @@ function buildTabHtml(studentQuestion){
 }
 
 function checkChatStatus(studentQuestion, tab){
-  if (studentQuestion.chatNode.querySelector('.image-frame__badge--color-blue')) {
+  if (studentQuestion.chatNode.querySelector('.image-frame__badge--color-blue') && tab) {
     tab.classList.add('unresponded');
   } else {
     tab.classList.remove('unresponded');
@@ -203,19 +204,15 @@ function tabClick(tab){
   tab.addEventListener('click', function(e){
     let chatId = parseInt(e.srcElement.dataset.chatid);
     let foundStudentQuestion = findStudentQuestionByChatId(chatId);
-    foundStudentQuestion.chatNode.click();
+    if (foundStudentQuestion) {
+      foundStudentQuestion.chatNode.click();
+    }  
   });
 }
 
 function attachTrackStudentListeners(){
   allStudentQuestions.forEach(function(studentQuestion){
     trackStudent(studentQuestion.chatNode);
-  });
-}
-
-function attachTrackUnrespondedObservers(){
-  allStudentQuestions.forEach(function(studentQuestion){
-    addUnrespondedObserverToChatNode(studentQuestion.chatNode)
   });
 }
 
@@ -246,4 +243,3 @@ const sideChatWindow = document.querySelector('.list--last-child-border');
 createStudentQuestionsFromDom();
 observeSideChat(sideChatWindow);
 attachTrackStudentListeners();
-attachTrackUnrespondedObservers(); // needs to be moved
