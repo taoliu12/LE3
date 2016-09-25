@@ -1,0 +1,34 @@
+.chat-tab {
+  float: left;
+  background-color: gray;
+  padding: 3px;
+  color: whitesmoke;
+  border: 1px solid white;
+  border-radius: 4px;
+}
+
+.chat-tab.unresponded {
+  background-color: lightskyblue;
+  font-weight: bold;
+}
+
+#chat-tab-bar {
+  overflow: hidden;
+}
+
+.tracker {
+  border: 1px solid white;
+  background-color: white;
+  text-align: center;
+  color: blue;
+  padding: 1px;
+  font-size: 70%;
+}
+
+.close-tab:hover {
+  color: red;
+}
+
+.close-tab {
+  margin: 5px 5px 5px 1px;
+}
