@@ -154,9 +154,17 @@ function createTab(studentQuestion){
 
 function buildTabHtml(studentQuestion){
   let chatTab = '<div class="chat-tab" id="chat_' + studentQuestion.chatId +'_tab" ' 
-  chatTab += 'data-chatId="' + studentQuestion.chatId +'">'+ studentQuestion.studentName();
+  chatTab += 'data-chatId="' + studentQuestion.chatId +'">'+ normalizedName(studentQuestion.studentName());
   chatTab += ' <span class="close-tab">x</span></div>';
   return chatTab;
+}
+
+function normalizedName(name){
+  if (name.includes("@")) {
+    return name.slice(0, name.search("@"))
+  } else {
+    return name
+  }
 }
 
 function checkChatStatus(studentQuestion, tab){
