@@ -4,10 +4,4 @@ Welcome to LE3 (aka Learn Expert Enhancement Extension). This repo will be where
 
 ## Installation
 
-1. Download the CRX file [here](https://drive.google.com/file/d/0BzfEBY2pYOGZLXgzWEplSkhPc3c/view?usp=sharing).
-
-2. Open your [Chrome extensions page](chrome://extensions/).
-
-3. Drag and drop the CRX file on the Chrome extensions page.
-
-4. Feel free to hide the extension in your Chrome menu.
+This extension is hosted on the Chrome Web Store. It can only be accessed via [this link](https://chrome.google.com/webstore/detail/le3/hjjhpafjpkkjbdchnaeikofponobhngc). Click the add to chrome button to install. Feel fee to hide in chrome menu.
