@@ -162,7 +162,7 @@ function buildTabHtml(studentQuestion){
 function checkChatStatus(studentQuestion, tab){
   if (studentQuestion.chatNode.querySelector('.image-frame__badge--color-blue') && tab) {
     tab.classList.add('unresponded');
-  } else {
+  } else if(!studentQuestion.chatNode.querySelector('.image-frame__badge--color-blue') && tab) {
     tab.classList.remove('unresponded');
   }
 }
