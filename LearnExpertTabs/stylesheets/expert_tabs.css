@@ -12,6 +12,16 @@
   font-weight: bold;
 }
 
+.chat-tab.inactive-chat {
+  font-style: italic;
+  color: lightgray;
+}
+
+.chat-tab.requires-action {
+  background-color: red;
+  font-weight: bold;
+}
+
 #chat-tab-bar {
   overflow: scroll;
 }
