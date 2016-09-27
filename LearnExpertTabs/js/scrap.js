@@ -45,4 +45,76 @@ chatNodes.forEach(function(chatNode){
 })
 
 
+// Create a function that will get all the siblings of a chatnode
+// That function will then loop through all the sibling nodes until it encounters itself
+// The loop will keep track of each time it hit a node with the class "fc--question-section-header"
+// The function will assign the StudentQuestion with a status based on how many headers are above it
+// 1: RA 2: A 3: IA 4: RR 
+// RA tabs will be red and will auto create a tab
+// A are styled as is
+// IA will be italicized
+// RR should autoclose the tab
+
+function tabActionOnStatus(chatNode){
+  switch(findActivityStatus(chatNode)) {
+    case 1:
+      requiresActionStatusAction(chatNode.chatId)
+      break;
+    case 2:
+      activeStatusAction(chatNode.chatId)
+      break;
+    case 3:
+      inactiveStatusAction(chatNode.chatId)
+      break;
+    case 4;
+      resolvedStatusAction(chatNode.chatId)
+      break;
+    default:
+      break;
+  }
+}
+
+function findActivityStatus(chatNode){
+  let siblings = chatNode.parentNode.childNodes;
+  let i = 0;
+  let headersPassed = 0
+  while (siblings[i] != chatNode ){
+    if (siblings[i].classList.contains("fc--question-section-header"){
+      headersPassed++
+    });
+    i++ 
+  }
+  return headersPassed
+}
+
+function requiresActionStatusAction(chatId){
+  if (!findTab(chatId)){
+    let studentQuestion = findStudentQuestionByChatId(chatId);
+    createTab(studentQuestion);
+  } else {
+    tab = findTab(chatId)
+    tab.classList.remove('unresponded')
+    tab.classList.add('requires-action')
+  }
+}
+
+function inactiveStatusAction(chatId){
+  let tab = findTab(chatId);
+  if (tab) {
+    tab.classList.add('inactive')
+  }
+}
+
+function resolvedStatusAction(chatId){
+  let tab = findTab(chatId);
+  if (tab) {
+    closeTab(tab)
+  }
+}
+
+function activeStatusAction(chatId){
+  findTab(chatId).classList.remove('inactive', 'requires-action')
+}
+
+
 
