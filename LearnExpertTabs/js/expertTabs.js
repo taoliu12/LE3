@@ -21,8 +21,9 @@ class StudentQuestion{
 
 // initializers
 
-var chatId = 0;
-var allStudentQuestions = []; 
+let chatId = 0;
+let allStudentQuestions = [];
+let options = {}
 
 function createStudentQuestionsFromDom(){
   var chatNodes = document.querySelectorAll('.fc--question-node');
@@ -37,6 +38,7 @@ function createStudentQuestion(chatNode){
   let newStudentQuestion = new StudentQuestion(chatNode, chatId);
   chatId++;
   newStudentQuestion.addTrackerElement(createTrackerElement(newStudentQuestion.chatId));
+  tabActionOnStatus(newStudentQuestion.chatNode);
   return newStudentQuestion;
 }
 
@@ -47,7 +49,7 @@ function addUnrespondedObserverToChatNode(chatNode){
 }
 
 function getChatIdFromChatNode(chatNode){
-  return chatNode.querySelector('.tracker').dataset.chatid 
+  return parseInt(chatNode.querySelector('.tracker').dataset.chatid) 
 }
 
 function getTabFromChatId(chatId){
@@ -67,6 +69,7 @@ function reloadOrCreateStudentQuestion(chatNode){
       student = studentQuestion
       if(findTab(studentQuestion.chatId)){
         checkChatStatus(studentQuestion, findTab(studentQuestion.chatId))
+        tabActionOnStatus(studentQuestion.chatNode)
       }
     }
   });
@@ -150,6 +153,7 @@ function createTab(studentQuestion){
   attachTabListener(tabs);
   checkChatStatus(studentQuestion, tabElement);
   addUnrespondedObserverToChatNode(studentQuestion.chatNode)
+  tabActionOnStatus(studentQuestion.chatNode);
 }
 
 function buildTabHtml(studentQuestion){
@@ -193,6 +197,72 @@ function findTab(chatId){
   return document.querySelector('#chat_' + chatId + '_tab')
 }
 
+function tabActionOnStatus(chatNode){
+  let chatId = getChatIdFromChatNode(chatNode);
+  switch(findActivityStatus(chatNode)) {
+    case 1:
+      requiresActionStatusAction(chatId)
+      break;
+    case 2:
+      activeStatusAction(chatId)
+      break;
+    case 3:
+      inactiveStatusAction(chatId)
+      break;
+    case 4:
+      resolvedStatusAction(chatId)
+      break;
+    default:
+      break;
+  }
+}
+
+function findActivityStatus(chatNode){
+  let siblings = chatNode.parentNode.childNodes;
+  let i = 0;
+  let headersPassed = 0
+  while (siblings[i] != chatNode ){
+    if (siblings[i].classList.contains("fc--question-section-header")){
+      headersPassed++
+    }
+    i++ 
+  }
+  return headersPassed
+}
+
+function requiresActionStatusAction(chatId){
+  let tab = findTab(chatId);
+  if (!tab && options.autotab){
+    let studentQuestion = findStudentQuestionByChatId(chatId);
+    addTabToDom(studentQuestion);
+  } else if (tab) {
+    tab.classList.remove('unresponded')
+    tab.classList.add('requires-action')
+  }
+}
+
+function inactiveStatusAction(chatId){
+  let tab = findTab(chatId);
+  if (tab) {
+    tab.classList.add('inactive-chat')
+  }
+}
+
+function resolvedStatusAction(chatId){
+  let tab = findTab(chatId);
+  if (tab) {
+    tab.querySelector('.close-tab').click()
+  }
+}
+
+function activeStatusAction(chatId){
+  let tab = findTab(chatId);
+  if (tab) {
+    tab.classList.remove('inactive-chat', 'requires-action')
+  }
+}
+
+
 // Event Listeners
 
 function attachTabListener(tabs){
@@ -202,7 +272,7 @@ function attachTabListener(tabs){
   });
 }
 
-function closeTab(tab){
+function closeTab(tab){ //name needs to be changed 
   tab.querySelector('.close-tab').addEventListener('click', function(e){
     tab.parentNode.removeChild(tab);
   })
@@ -228,26 +298,39 @@ function trackStudent(studentNode){
  studentNode.querySelector('.tracker').addEventListener('click', function(e){
   let chatId = parseInt(e.srcElement.dataset.chatid);
   let studentQuestionReturn = findStudentQuestionByChatId(chatId);
-  if (!document.querySelector('#chat-tab-bar')){
-    createTabBar();
-    createTab(studentQuestionReturn);
-  } else {
-    createTab(studentQuestionReturn);
-  }
+  addTabToDom(studentQuestionReturn);
  });
 }
 
+function addTabToDom(studentQuestion){
+  if (!document.querySelector('#chat-tab-bar')){
+    createTabBar();
+    createTab(studentQuestion);
+  } else {
+    createTab(studentQuestion);
+  }
+}
+
 function observeSideChat(sideChatWindow){
-  var config = { attributes: true, childList: true, characterData: true };
+  let config = { attributes: true, childList: true, characterData: true };
   chatNodeObserver.observe(sideChatWindow, config); 
 }
 
 const sideChatWindow = document.querySelector('.list--last-child-border');
 
+function getOptions(){
+  chrome.storage.sync.get({
+    autotab: true
+  }, function(items) {
+    options.autotab = items.autotab;
+  });
+}
+
 
 
 // To Run
 
+getOptions();
 createStudentQuestionsFromDom();
 observeSideChat(sideChatWindow);
 attachTrackStudentListeners();
