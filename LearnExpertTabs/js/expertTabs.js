@@ -139,7 +139,7 @@ function getChatNodeFromUnrespondedObserver(targetNode){
 
 // Tabs
 function createTabBar(){
-  let rightChat = document.querySelector('.util--anchor__frame > div'); 
+  let rightChat = document.querySelectorAll('.list.list--separators-grey-faint')[1]; 
   let tabBar = document.createElement("div");
   tabBar.id = "chat-tab-bar";
   rightChat.insertBefore(tabBar, rightChat.firstChild);
@@ -330,7 +330,13 @@ function getOptions(){
 
 // To Run
 
-getOptions();
-createStudentQuestionsFromDom();
-observeSideChat(sideChatWindow);
-attachTrackStudentListeners();
+
+function start(){
+  getOptions();
+  createStudentQuestionsFromDom();
+  observeSideChat(sideChatWindow);
+  attachTrackStudentListeners();
+}
+
+start()
+
