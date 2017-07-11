@@ -145,7 +145,7 @@ function createTabBar(){
   rightChat.insertBefore(tabBar, rightChat.firstChild);
   return tabBar;
 }
-////////////////////////////////////////////////
+
 function createTab(studentQuestion){
   let tabBar = document.querySelector('#chat-tab-bar')
   let newTab =  buildTab(studentQuestion);
@@ -177,18 +177,6 @@ function buildTab(studentQuestion){
 
  return tab
 }
-
-function buildTabHtml(studentQuestion){
-  debugger;
-  let chatTab = '<div class="chat-tab" id="chat_' + studentQuestion.chatId +'_tab" ' 
-  debugger;
-  chatTab += 'data-chatId="' + studentQuestion.chatId +'">'+ normalizedName(studentQuestion.studentName());
-  debugger;
-  chatTab += ' <span class="close-tab">x</span></div>';
-  return chatTab;
-}
-
-////////////////////////////////////////////////
 
 function normalizedName(name){
   if (name.includes("@")) {
