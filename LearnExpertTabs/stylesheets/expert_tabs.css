@@ -7,9 +7,17 @@
   border-radius: 4px;
 }
 
+@keyframes tabColorSwitch {
+  0% {background-color: lightskyblue;}
+  67% {background-color: orange;}
+  100% {background-color: red;}
+}
+
 .chat-tab.unresponded {
   background-color: lightskyblue;
   font-weight: bold;
+  animation-name: tabColorSwitch;
+  animation-duration: 900s;
 }
 
 .chat-tab.inactive-chat {
