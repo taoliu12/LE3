@@ -145,23 +145,50 @@ function createTabBar(){
   rightChat.insertBefore(tabBar, rightChat.firstChild);
   return tabBar;
 }
-
+////////////////////////////////////////////////
 function createTab(studentQuestion){
-  document.querySelector('#chat-tab-bar').innerHTML += buildTabHtml(studentQuestion);
-  let tabs = document.querySelectorAll('#chat-tab-bar > .chat-tab')
+  let tabBar = document.querySelector('#chat-tab-bar')
+  let newTab =  buildTab(studentQuestion);
   let tabElement = document.querySelector('#chat-tab-bar').lastChild;
-  attachTabListener(tabs);
-  checkChatStatus(studentQuestion, tabElement);
+
+  tabBar.append(newTab)
+  attachTabListener(newTab);
+  checkChatStatus(studentQuestion, newTab);
   addUnrespondedObserverToChatNode(studentQuestion.chatNode)
   tabActionOnStatus(studentQuestion.chatNode);
 }
 
+function buildTab(studentQuestion){
+  let tab = document.createElement('div')
+  let closeButton = document.createElement('span')
+  closeButton.setAttribute('class', 'close-tab')
+  tab.className += "chat-tab"
+  tab.setAttribute('id', `chat_${studentQuestion.chatId}_tab`)
+  tab.setAttribute('data-chatId', `${studentQuestion.chatId}`)
+
+
+
+  let x = document.createTextNode("x")
+  let name = document.createTextNode(normalizedName(studentQuestion.studentName()))
+  
+  closeButton.appendChild(x)
+  tab.appendChild(name)
+  tab.appendChild(closeButton);
+
+ return tab
+}
+
 function buildTabHtml(studentQuestion){
+  debugger;
   let chatTab = '<div class="chat-tab" id="chat_' + studentQuestion.chatId +'_tab" ' 
+  debugger;
   chatTab += 'data-chatId="' + studentQuestion.chatId +'">'+ normalizedName(studentQuestion.studentName());
+  debugger;
   chatTab += ' <span class="close-tab">x</span></div>';
   return chatTab;
 }
+
+////////////////////////////////////////////////
 
 function normalizedName(name){
   if (name.includes("@")) {
@@ -265,11 +292,9 @@ function activeStatusAction(chatId){
 
 // Event Listeners
 
-function attachTabListener(tabs){
-  tabs.forEach(function(tab){
-    tabClick(tab);
-    closeTab(tab);
-  });
+function attachTabListener(tab){
+  tabClick(tab);
+  closeTab(tab);
 }
 
 function closeTab(tab){ //name needs to be changed 
@@ -297,8 +322,10 @@ function attachTrackStudentListeners(){
 function trackStudent(studentNode){
  studentNode.querySelector('.tracker').addEventListener('click', function(e){
   let chatId = parseInt(e.srcElement.dataset.chatid);
-  let studentQuestionReturn = findStudentQuestionByChatId(chatId);
-  addTabToDom(studentQuestionReturn);
+  if(!document.querySelector(`#chat_${chatId}_tab `)){
+    let studentQuestionReturn = findStudentQuestionByChatId(chatId);
+    addTabToDom(studentQuestionReturn);
+  }
  });
 }
 
@@ -338,5 +365,5 @@ function start(){
   attachTrackStudentListeners();
 }
 
-start()
 
+setTimeout(start, 4000);
