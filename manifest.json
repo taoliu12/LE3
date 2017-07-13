@@ -4,7 +4,7 @@
   "description": "The Learn Expert Enhancement Extension, or LE3 provides additional features to learn experts to aid in productivity.",
   "icons": {"48": "images/icon48.png"},
   "author": "https://github.com/nstephenson",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "content_scripts": [
     {
       "run_at": "document_idle",
