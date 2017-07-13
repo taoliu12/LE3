@@ -4,6 +4,7 @@ class StudentQuestion{
     this.chatId = chatId;
     this.unresponded = !!chatNode.querySelector('.image-frame__badge')
     allStudentQuestions.push(this);
+    this.response = ''
   }
 
   studentName(){
@@ -24,6 +25,7 @@ class StudentQuestion{
 let chatId = 0;
 let allStudentQuestions = [];
 let options = {}
+let currentStudent = null
 
 function createStudentQuestionsFromDom(){
   var chatNodes = document.querySelectorAll('.fc--question-node');
@@ -60,15 +62,14 @@ function getTabFromChatId(chatId){
 function reloadOrCreateStudentQuestion(chatNode){
   let question = chatNode.querySelector('.util--break-word').textContent;
   let studentName = chatNode.querySelector('.heading--level-4').textContent;
-  let found = false;
-  let student = '';
+  let found = false, student = '', tab = null;
   allStudentQuestions.forEach(function(studentQuestion){
     if (!found && studentQuestion.studentName() === studentName && studentQuestion.question() === question){
       reloadTracker(chatNode, studentQuestion);
       found = !found;
       student = studentQuestion
-      if(findTab(studentQuestion.chatId)){
-        checkChatStatus(studentQuestion, findTab(studentQuestion.chatId))
+      if(tab = findTab(studentQuestion.chatId)){
+        checkChatStatus(studentQuestion, tab)
         tabActionOnStatus(studentQuestion.chatNode)
       }
     }
@@ -77,6 +78,7 @@ function reloadOrCreateStudentQuestion(chatNode){
     student = createStudentQuestion(chatNode);
     trackStudent(student.chatNode);
   }
+  attachCurrentStudentListener(student)
   return student;
 }
 
@@ -101,6 +103,7 @@ var chatNodeObserver = new MutationObserver(function(mutations) {
   mutations.forEach(function(mutation) {
     if(mutation.addedNodes[0] && mutation.addedNodes[0].classList[0] === 'fc--question-node'){
       let stuQue = reloadOrCreateStudentQuestion(mutation.addedNodes[0]);
+
       addUnrespondedObserverToChatNode(stuQue.chatNode)
     }
   });    
@@ -162,7 +165,7 @@ function buildTab(studentQuestion){
   let tab = document.createElement('div')
   let closeButton = document.createElement('span')
   closeButton.setAttribute('class', 'close-tab')
-  tab.className += "chat-tab"
+  tab.classList.add("chat-tab")
   tab.setAttribute('id', `chat_${studentQuestion.chatId}_tab`)
   tab.setAttribute('data-chatId', `${studentQuestion.chatId}`)
 
@@ -187,7 +190,7 @@ function normalizedName(name){
 }
 
 function checkChatStatus(studentQuestion, tab){
-  if (studentQuestion.chatNode.querySelector('.image-frame__badge--color-blue') && tab) {
+  if (studentQuestion.chatNode.querySelector('.image-frame__badge--color-blue') && tab && !tab.classList.contains("requires-action")) {
     tab.classList.add('unresponded');
   } else if(!studentQuestion.chatNode.querySelector('.image-frame__badge--color-blue') && tab) {
     tab.classList.remove('unresponded');
@@ -280,6 +283,21 @@ function activeStatusAction(chatId){
 
 // Event Listeners
 
+function attachCurrentStudentListener(student){
+  let response = document.querySelector('#js--admin-txt-input')
+
+  student.chatNode.addEventListener('click', function(e){
+    if (currentStudent){
+      currentStudent.response = response.value
+    }
+
+
+    currentStudent = student
+    response.value = currentStudent.response
+  })
+
+}
+
 function attachTabListener(tab){
   tabClick(tab);
   closeTab(tab);
@@ -343,9 +361,8 @@ function getOptions(){
 
 
 
+
 // To Run
-
-
 function start(){
   getOptions();
   createStudentQuestionsFromDom();
