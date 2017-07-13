@@ -26,6 +26,7 @@ let chatId = 0;
 let allStudentQuestions = [];
 let options = {}
 let currentStudent = null
+let unrespondedChats = [];
 
 function createStudentQuestionsFromDom(){
   var chatNodes = document.querySelectorAll('.fc--question-node');
@@ -120,7 +121,7 @@ var unrespondedObserver = new MutationObserver(function(mutations) {
       let tab = findTab(chatId);
       checkChatStatus(studentQuestion, tab);
     }
-  });    
+  });     
 });
 
 
@@ -189,11 +190,14 @@ function normalizedName(name){
   }
 }
 
+
 function checkChatStatus(studentQuestion, tab){
   if (studentQuestion.chatNode.querySelector('.image-frame__badge--color-blue') && tab && !tab.classList.contains("requires-action")) {
     tab.classList.add('unresponded');
+    !unrespondedChats.includes(studentQuestion.chatId) ? unrespondedChats.push(studentQuestion.chatId) : null
   } else if(!studentQuestion.chatNode.querySelector('.image-frame__badge--color-blue') && tab) {
     tab.classList.remove('unresponded');
+    unrespondedChats = unrespondedChats.filter((id)=> id != studentQuestion.chatId )
   }
 }
 
@@ -255,6 +259,7 @@ function requiresActionStatusAction(chatId){
     addTabToDom(studentQuestion);
   } else if (tab) {
     tab.classList.remove('unresponded')
+    unrespondedChats = unrespondedChats.filter((id)=> id != chatId )
     tab.classList.add('requires-action')
   }
 }
@@ -381,8 +386,17 @@ function addKeyCommandListener(){
     if (e.metaKey  &&  e.altKey  &&  e.which === 190) {
       findTab(currentStudent.chatId).nextSibling.click()  
     }
+    // tab
+     if (e.metaKey  &&  e.altKey  &&  e.which === 9) {
+      if (currentStudent.chatId === unrespondedChats[0]){
+        findTab(unrespondedChats[1]).click()
+      } else {
+        findTab(unrespondedChats[0]).click()  
+      }
+    }
   });
 }
+
 
 
 // To Run
