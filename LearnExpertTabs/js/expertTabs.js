@@ -360,6 +360,29 @@ function getOptions(){
 }
 
 
+// Key Commands
+function addKeyCommandListener(){
+  document.addEventListener ("keydown", function (e) {
+    let tabs = document.querySelector('#chat-tab-bar').children
+
+    //keys 1-9
+    if (e.metaKey  &&  e.altKey  &&  e.which > 48 && e.which < 58) {
+      tabs[e.which - 49].click()
+    }
+    // 0
+    if (e.metaKey  &&  e.altKey  &&  e.which === 48) {
+      tabs[tabs.length - 1].click()
+    }
+    // <,
+    if (e.metaKey  &&  e.altKey  &&  e.which === 188) {
+      findTab(currentStudent.chatId).previousSibling.click()
+    }
+    //.>
+    if (e.metaKey  &&  e.altKey  &&  e.which === 190) {
+      findTab(currentStudent.chatId).nextSibling.click()  
+    }
+  });
+}
 
 
 // To Run
@@ -368,6 +391,7 @@ function start(){
   createStudentQuestionsFromDom();
   observeSideChat(sideChatWindow);
   attachTrackStudentListeners();
+  addKeyCommandListener()
 }
 
 
