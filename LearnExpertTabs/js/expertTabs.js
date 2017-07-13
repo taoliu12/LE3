@@ -292,6 +292,7 @@ function attachCurrentStudentListener(student){
   let response = document.querySelector('#js--admin-txt-input')
 
   student.chatNode.addEventListener('click', function(e){
+
     if (currentStudent){
       currentStudent.response = response.value
     }
@@ -299,6 +300,7 @@ function attachCurrentStudentListener(student){
 
     currentStudent = student
     response.value = currentStudent.response
+    response.focus()
   })
 
 }
