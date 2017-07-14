@@ -373,23 +373,23 @@ function addKeyCommandListener(){
     let tabs = document.querySelector('#chat-tab-bar').children
 
     //keys 1-9
-    if (e.metaKey  &&  e.altKey  &&  e.which > 48 && e.which < 58) {
-      tabs[e.which - 49].click()
+    if (e.metaKey  &&  e.altKey  &&  parseInt(e.key) > 0 && parseInt(e.key) < 10) {
+      tabs[parseInt(e.key) - 1].click()
     }
     // 0
-    if (e.metaKey  &&  e.altKey  &&  e.which === 48) {
+    if (e.metaKey  &&  e.altKey  &&  e.key === '0') {
       tabs[tabs.length - 1].click()
     }
     // <,
-    if (e.metaKey  &&  e.altKey  &&  e.which === 188) {
+    if (e.metaKey  &&  e.altKey  &&  e.key === ',') {
       findTab(currentStudent.chatId).previousSibling.click()
     }
     //.>
-    if (e.metaKey  &&  e.altKey  &&  e.which === 190) {
+    if (e.metaKey  &&  e.altKey  &&  e.key === '.') {
       findTab(currentStudent.chatId).nextSibling.click()  
     }
     // tab
-     if (e.metaKey  &&  e.altKey  &&  e.which === 9) {
+     if (e.metaKey  &&  e.altKey  &&  e.key === 'Tab') {
       if (currentStudent.chatId === unrespondedChats[0]){
         findTab(unrespondedChats[1]).click()
       } else {
@@ -397,6 +397,10 @@ function addKeyCommandListener(){
       }
     }
   });
+}
+
+function lastTabCombo(c){
+
 }
 
 
