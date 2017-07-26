@@ -396,7 +396,7 @@ function addKeyCommandListener(){
 
 function copyQueueLink(stQ){
   ele = createCopyElement();
-  ele.value = stQ.questionLink +" "+ normalizedName(stQ.studentName());
+  ele.value = 'qbot queue ' + stQ.questionLink +" "+ normalizedName(stQ.studentName());
 
   document.body.appendChild(ele);
   ele.select();
