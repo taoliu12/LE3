@@ -1,0 +1,19 @@
+{
+  "name": "le3",
+  "version": "1.0.0",
+  "description": "Enhancements to the Expert Chat Platform",
+  "main": "bundle.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NStephenson/LE3.git"
+  },
+  "author": "Nicholas Stephenson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NStephenson/LE3/issues"
+  },
+  "homepage": "https://github.com/NStephenson/LE3#readme"
+}
