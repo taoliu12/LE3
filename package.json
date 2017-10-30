@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/NStephenson/LE3/issues"
   },
-  "homepage": "https://github.com/NStephenson/LE3#readme"
+  "homepage": "https://github.com/NStephenson/LE3#readme",
+  "devDependencies": {
+    "webpack": "^3.8.1"
+  }
 }
