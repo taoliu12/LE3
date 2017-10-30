@@ -1,2 +1,4 @@
 LE3.crx
 LE3.pem
+node_modules/
+bundle.js
