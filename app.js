@@ -1,3 +1,4 @@
-import bar from './LearnExpertTabs/js/expertTabs'
+import Run from './LearnExpertTabs/js/expertTabs'
 
-bar()
+setTimeout(Run(), 4000);
+
