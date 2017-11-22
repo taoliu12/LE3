@@ -1,4 +1,7 @@
-export default class StudentQuestion{
+import {findTab, checkChatStatus } from './multiple'
+import Tab from './tab'
+
+export default class StudentQuestion {
   constructor(chat, chatId){
     this.chat = chat;
     this.chatId = chatId;
@@ -9,12 +12,12 @@ export default class StudentQuestion{
   }
 
   addTrackerElement(){ 
-    this.chatNode.querySelector('.media-block__content').innerHTML += createTrackerElement()
+    this.chat.html.querySelector('.media-block__content').innerHTML += this.createTrackerElement()
   }
 
 
   normalizedName(){
-    let name = this.chatNode.name
+    let name = this.chat.name
     if (name.includes("@")) {
       return name.slice(0, name.search("@")) + " "
     } else {
@@ -27,18 +30,18 @@ export default class StudentQuestion{
   }
 
   tabActionOnStatus(){
-    switch(this.chatNode.findActivityStatus()) {
+    switch(this.chat.findActivityStatus()) {
       case 1:
-        requiresActionStatusAction(this.chatId)
+        this.requiresActionStatusAction(this.chatId)
         break;
       case 2:
-        activeStatusAction(this.chatId)
+        this.activeStatusAction(this.chatId)
         break;
       case 3:
-        inactiveStatusAction(this.chatId)
+        this.inactiveStatusAction(this.chatId)
         break;
       case 4:
-        resolvedStatusAction(this.chatId)
+        this.resolvedStatusAction(this.chatId)
         break;
       default:
         break;
@@ -47,13 +50,13 @@ export default class StudentQuestion{
 
   requiresActionStatusAction(chatId){
     let tab = findTab(chatId);
-    if (!tab && options.autotab){
+    if (!tab){ //&& options.autotab){ <--------- This option needs to be returned in
       let studentQuestion = StudentQuestion.find(chatId);
       Tab.create(studentQuestion);
     } else if (tab) {
       tab.classList.remove('unresponded')
-      unrespondedChats = unrespondedChats.filter((id)=> id != chatId )
       tab.classList.add('requires-action')
+      StudentQuestion.unrespondedChats = StudentQuestion.unrespondedChats.filter(id=> id != chatId )
     }
   }
 
@@ -89,9 +92,9 @@ export default class StudentQuestion{
   }
 
   reloadTracker(chat){
-    chat.html.contentBlock.innerHTML += createTrackerElement();
-    studentQuestion.chat = chat;
-    studentQuestion.trackStudent();
+    chat.contentBlock.innerHTML += this.createTrackerElement();
+    this.chat = chat;
+    this.trackStudent();
   }
 
 
@@ -116,11 +119,11 @@ export default class StudentQuestion{
   // CLASS METHODS
 
   static find(chatId){
-    StudentQuestion.all.forEach(function(stQ){
+    for(let stQ of StudentQuestion.all){
       if (stQ.chatId === chatId){
         return stQ;
       }
-    })
+    }
   }
 
   static create(chatNode){
@@ -135,6 +138,7 @@ export default class StudentQuestion{
     this.all = [];
     this.chatId = 0;
     this.currentStudent = null;
+    this.unrespondedChats = []
   }
 }
 

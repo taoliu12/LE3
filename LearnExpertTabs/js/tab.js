@@ -1,35 +1,40 @@
+import { findTab, checkChatStatus } from './multiple'
+import StudentQuestion from './studentQuestion'
 export default class Tab {
 
-//External functions
+// External functions
 //  checkChatStatus()
 //  addUnrespondedObserverToChatNode()
 //  tabActionOnStatus()
  
 
   constructor(elem){
-    this.elem = elem
-
+    this.elem = elem;
   }
 
 
   tabClick(){
-    this.ele.addEventListener('click', function(e){
-      let chatId = parseInt(e.srcElement.dataset.chatid);
-      let found = StudentQuestion.find(chatId);
-      if (found) {
-        found.chat.html.click();
-      }  
-    });
+    this.elem.addEventListener('click', this.selectStudent);
+  }
+
+  selectStudent(e){
+    let chatId = parseInt(e.srcElement.dataset.chatid);
+    let found = StudentQuestion.find(chatId);
+    if (found) {
+      found.chat.html.click();
+    }  
   }
 
   attachTabListeners(){
-    this.ele.tabClick();
-    this.ele.closeTab();
+    this.tabClick();
+    this.closeTab();
   }
 
   closeTab(){ //name needs to be changed 
-    this.ele.querySelector('.close-tab').addEventListener('click', e =>{
-      this.ele.remove();
+    this.elem.querySelector('.close-tab').addEventListener('click', e =>{
+      this.elem.remove();
+      StudentQuestion.unrespondedChats = StudentQuestion.unrespondedChats
+        .filter((id)=> id != parseInt(this.elem.dataset.chatid));
     })
   }
 
@@ -38,11 +43,11 @@ export default class Tab {
   static create(stQ){
     let newTab =  new Tab(this.buildTab(stQ));
 
-    Tab.tabBar.append(newTab)
-    attachTabListeners(newTab);
-    checkChatStatus(stQ, newTab);
-    addUnrespondedObserverToChatNode(stQ.chat.html)
-    tabActionOnStatus(stQ.chat.html);
+    Tab.tabBar.append(newTab.elem)
+    newTab.attachTabListeners(newTab.elem);
+    checkChatStatus(stQ, newTab.elem);
+    stQ.tabActionOnStatus();
+
   }
 
   static buildTab(stQ){
@@ -60,7 +65,8 @@ export default class Tab {
     tab.appendChild(name)
     tab.appendChild(closeButton);
 
-   return tabElem
+
+   return tab
   }
 
   static init(){

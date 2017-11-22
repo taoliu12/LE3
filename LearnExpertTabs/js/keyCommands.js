@@ -1,11 +1,13 @@
+import {findTab, checkChatStatus } from './multiple'
+import StudentQuestion from './studentQuestion'
 export default class KeyCommands {
 
   constructor(){
-    addKeyCommandListener();
+    this.addKeyCommandListener();
   }
   
   addKeyCommandListener(){
-    document.addEventListener ("keydown", function (e) {
+    document.addEventListener ("keydown", e => {
       let tabs = document.querySelector('#chat-tab-bar').children
 
       //keys 1-9
@@ -19,29 +21,31 @@ export default class KeyCommands {
       }
       // <,
       if (e.metaKey  &&  e.altKey  &&  e.code === 'Comma') {
-        findTab(currentStudent.chatId).previousSibling.click()
+        findTab(StudentQuestion.currentStudent.chatId).previousSibling.click()
       }
       //.>
       if (e.metaKey  &&  e.altKey  &&  e.code === 'Period') {
-        findTab(currentStudent.chatId).nextSibling.click()  
+        findTab(StudentQuestion.currentStudent.chatId).nextSibling.click()  
       }
       // tab
       if (e.metaKey  &&  e.altKey  &&  e.code === 'Tab') {
-        if (currentStudent.chatId === unrespondedChats[0]){
-          findTab(unrespondedChats[1]).click()
+        if (!StudentQuestion.unrespondedChats.length){
+          console.log("No unresponded Students! Good Job!")
+        } else if (StudentQuestion.currentStudent.chatId === StudentQuestion.unrespondedChats[0]){
+          findTab(StudentQuestion.unrespondedChats[1]).click()
         } else {
-          findTab(unrespondedChats[0]).click()  
+          findTab(StudentQuestion.unrespondedChats[0]).click()  
         }
       }
 
       if (e.metaKey  &&  e.altKey  &&  e.code === 'KeyA') {
-       copyQueueLink(currentStudent)
+       this.copyQueueLink(StudentQuestion.currentStudent)
       }
     });
   }
 
   copyQueueLink(stQ){
-    ele = createCopyElement();
+    let ele = this.createCopyElement();
     ele.value = 'qbot queue ' + stQ.chat.questionLink +" "+ stQ.normalizedName();
 
     document.body.appendChild(ele);

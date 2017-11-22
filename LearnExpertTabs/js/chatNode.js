@@ -1,11 +1,11 @@
-export default class ChatNode {
+export default class Chat {
   constructor(nodeHtml){
     this.html = nodeHtml
     this.imageFrame = nodeHtml.querySelector('.image-frame--fixed-size-large');
     this.name = nodeHtml.querySelector('.heading--level-4').textContent
     this.question = nodeHtml.querySelector('.util--break-word').textContent
     this.contentBlock = nodeHtml.querySelector('.media-block__content')
-    this.questionLink = chatNode.querySelector('span.util--padding-lm a').href
+    this.questionLink = nodeHtml.querySelector('span.util--padding-lm a').href
   }
 
   findActivityStatus(){
