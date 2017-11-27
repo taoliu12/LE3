@@ -8,6 +8,10 @@ export default class Chat {
     this.questionLink = nodeHtml.querySelector('span.util--padding-lm a').href
   }
 
+  unrespondedBadge(){ 
+    return this.html.querySelector('.image-frame__badge--color-blue')
+  }
+
   findActivityStatus(){
     let siblings = this.html.parentNode.childNodes;
     let i = 0;
