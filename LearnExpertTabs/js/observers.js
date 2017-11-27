@@ -1,4 +1,4 @@
-import {findTab, checkChatStatus } from './multiple';
+import findTab from './multiple';
 import Chat from './chatNode';
 import StudentQuestion from './studentQuestion'
 export default class Observers {
@@ -8,12 +8,7 @@ export default class Observers {
     this.observeSideChat()
   }
 
-  //Exterior function calls
-  //  reloadOrCreateStudentQuestion()
-  //  findTab()
-  //  checkChatStatus()
-
-  reloadOrCreateStudentQuestion(chatHtml){ //this might move
+  reloadOrCreateStudentQuestion(chatHtml){ 
     let chat = new Chat(chatHtml)
     let found = false, student = '', tab = null;
     for (let studentQuestion of StudentQuestion.all){
@@ -22,7 +17,7 @@ export default class Observers {
         found = !found;
         student = studentQuestion
         if(tab = findTab(studentQuestion.chatId)){
-          checkChatStatus(studentQuestion, tab)
+          studentQuestion.checkChatStatus(tab)
           studentQuestion.tabActionOnStatus();
         }
       }
@@ -69,9 +64,10 @@ export default class Observers {
           let chatNode = this.getChatNodeFromUnrespondedObserver(mutation.target);
           let chatId = this.getChatIdFromChatNode(chatNode);
           let studentQuestion = StudentQuestion.find(chatId);
+          debugger;
           // studentQuestion.chat = chatNode;
-          let tab = findTab(chatId);
-          checkChatStatus(studentQuestion, tab);
+          var tab = findTab(chatId);
+          studentQuestion.checkChatStatus(tab);
         }
       }     
     });
