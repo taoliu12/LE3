@@ -1,4 +1,4 @@
-import { findTab, checkChatStatus } from './multiple'
+import {findTab} from './multiple'
 import StudentQuestion from './studentQuestion'
 export default class Tab {
 
@@ -45,7 +45,7 @@ export default class Tab {
 
     Tab.tabBar.append(newTab.elem)
     newTab.attachTabListeners(newTab.elem);
-    checkChatStatus(stQ, newTab.elem);
+    stQ.checkChatStatus(newTab.elem);
     stQ.tabActionOnStatus();
 
   }

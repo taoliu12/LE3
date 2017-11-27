@@ -1,4 +1,4 @@
-import {findTab, checkChatStatus } from './multiple'
+import findTab from './multiple'
 import Tab from './tab'
 
 export default class StudentQuestion {
@@ -103,7 +103,7 @@ export default class StudentQuestion {
 
     this.chat.html.addEventListener('click', e => {
 
-      if (StudentQuestion.currentStudent){
+      if (StudentQuestion.currentStudent && response){
         StudentQuestion.currentStudent.response = response.value
       }
 
@@ -113,6 +113,17 @@ export default class StudentQuestion {
       response.focus()
     })
 
+  }
+
+  checkChatStatus(tab){
+    debugger;
+    if (this.chat.unrespondedBadge() && tab && !tab.classList.contains("requires-action")) {
+      tab.classList.add('unresponded');
+      !StudentQuestion.unrespondedChats.includes(this.chatId) ? StudentQuestion.unrespondedChats.push(this.chatId) : null
+    } else if(!this.chat.unrespondedBadge() && tab) {
+      tab.classList.remove('unresponded');
+      StudentQuestion.unrespondedChats = StudentQuestion.unrespondedChats.filter((id)=> id != this.chatId )
+    }
   }
 
 
