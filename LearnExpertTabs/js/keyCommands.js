@@ -1,4 +1,4 @@
-import {findTab, checkChatStatus } from './multiple'
+import findTab from './multiple'
 import StudentQuestion from './studentQuestion'
 export default class KeyCommands {
 
@@ -12,7 +12,7 @@ export default class KeyCommands {
 
       //keys 1-9
       if (e.metaKey  &&  e.altKey  && e.code.slice(0,-1) === "Digit" && 
-          parseInt(e.code[5]) > 0 && parseInt(e.code[5]) < 10) {
+        parseInt(e.code[5]) > 0 && parseInt(e.code[5]) < 10) {
         tabs[parseInt(e.code[5]) - 1].click()
       }
       // 0
