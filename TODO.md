@@ -1,8 +1,3 @@
-# Bug Fixes 
-
-Students need to be removed from unresponded chats if their tab is closed.
-
-
 # Feature additions
 
 1. Dispatch mode: Users can hold shift while the page is loading to open the page in dispatch mode. This will cause ALL tabs in RA and Active to automatically open their tabs
