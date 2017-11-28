@@ -10,7 +10,7 @@
       "run_at": "document_idle",
       "matches": ["https://learn.co/expert-chat"],
       "js": ["bundle.js"],
-      "css": ["LearnExpertTabs/stylesheets/expert_tabs.css"]
+      "css": ["src/stylesheets/expert_tabs.css"]
     }
   ],
   "browser_action": {

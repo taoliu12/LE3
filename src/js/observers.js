@@ -64,8 +64,6 @@ export default class Observers {
           let chatNode = this.getChatNodeFromUnrespondedObserver(mutation.target);
           let chatId = this.getChatIdFromChatNode(chatNode);
           let studentQuestion = StudentQuestion.find(chatId);
-          debugger;
-          // studentQuestion.chat = chatNode;
           var tab = findTab(chatId);
           studentQuestion.checkChatStatus(tab);
         }

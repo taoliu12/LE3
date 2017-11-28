@@ -1,5 +1,6 @@
 import findTab from './multiple'
 import Tab from './tab'
+import ChromeOptions from './chromeOptions'
 
 export default class StudentQuestion {
   constructor(chat, chatId){
@@ -50,7 +51,7 @@ export default class StudentQuestion {
 
   requiresActionStatusAction(chatId){
     let tab = findTab(chatId);
-    if (!tab){ //&& options.autotab){ <--------- This option needs to be returned in
+    if (!tab && ChromeOptions.autotab){ 
       let studentQuestion = StudentQuestion.find(chatId);
       Tab.create(studentQuestion);
     } else if (tab) {
@@ -116,7 +117,7 @@ export default class StudentQuestion {
   }
 
   checkChatStatus(tab){
-    debugger;
+
     if (this.chat.unrespondedBadge() && tab && !tab.classList.contains("requires-action")) {
       tab.classList.add('unresponded');
       !StudentQuestion.unrespondedChats.includes(this.chatId) ? StudentQuestion.unrespondedChats.push(this.chatId) : null
@@ -149,7 +150,7 @@ export default class StudentQuestion {
     this.all = [];
     this.chatId = 0;
     this.currentStudent = null;
-    this.unrespondedChats = []
+    this.unrespondedChats = [];
   }
 }
 
