@@ -1,5 +1,4 @@
 function saveOptions(){
-  alert('hello!');
   var autotab = document.getElementById('autotab').checked;
   chrome.storage.sync.set({
     autotab: autotab
