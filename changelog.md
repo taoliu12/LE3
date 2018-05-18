@@ -1,3 +1,11 @@
+### Version 0.1.11 Update Notes:
+
+- Major code rewrite for performance and clarity
+- All chats in Active will automatically open tabs on page load
+- Track button change to "Open Tab"
+- Fixed issue with tab switching on closed tabs
+- Cleaned up console errors
+
 ### Version 0.1.10 Update Notes:
 
 - Added qbot queue to clipboard link

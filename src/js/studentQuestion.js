@@ -27,7 +27,7 @@ export default class StudentQuestion {
   }
 
   createTrackerElement(){
-    return '<div class="tracker" data-chatId="'+ this.chatId +'">Track</div>'
+    return '<div class="tracker" data-chatId="'+ this.chatId +'">Open Tab</div>'
   }
 
   tabActionOnStatus(){
@@ -79,6 +79,9 @@ export default class StudentQuestion {
     let tab = findTab(chatId);
     if (tab) {
       tab.classList.remove('inactive-chat', 'requires-action')
+    } else {
+      let studentQuestion = StudentQuestion.find(chatId);
+      Tab.create(studentQuestion);
     }
   }
 
