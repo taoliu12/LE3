@@ -5,10 +5,9 @@ export default class ChromeOptions {
   }
 
   getOptions(){
-    chrome.storage.sync.get({
-      autotab: true
-    }, function(items) {
+    chrome.storage.sync.get({autotab: true, version: null}, function(items) {
       ChromeOptions.autotab = items.autotab;
+      ChromeOptions.version = items.version
     });
   }
 

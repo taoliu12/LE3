@@ -1,14 +1,16 @@
-### Version 0.1.11 Update Notes:
+## Version 0.1.11 Update Notes:
 
-- Major code rewrite for performance and clarity
+- Code rewritten to use webpack and modules.
+- Onscreen notification for updates
 - All chats in Active will automatically open tabs on page load
 - Track button change to "Open Tab"
 - Fixed issue with tab switching on closed tabs
 - Cleaned up console errors
+- Hovering over tabs cursor now acts as a link
 
 ### Version 0.1.10 Update Notes:
 
-- Added qbot queue to clipboard link
+- Added "qbot queue" to clipboard link
 
 ## Version 0.1.9 Update Notes:
 
