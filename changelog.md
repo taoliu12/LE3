@@ -1,3 +1,7 @@
+## Version 0.1.12 Update Notes;
+
+- Changed tab matching to not match two questions by the same user with the same question name
+
 ## Version 0.1.11 Update Notes:
 
 - Code rewritten to use webpack and modules.

@@ -6,6 +6,7 @@ export default class Chat {
     this.question = nodeHtml.querySelector('.util--break-word').textContent
     this.contentBlock = nodeHtml.querySelector('.media-block__content')
     this.questionLink = nodeHtml.querySelector('span.util--padding-lm a').href
+    this.timeOpened = nodeHtml.querySelector('time').getAttribute('datetime')
   }
 
   unrespondedBadge(){ 

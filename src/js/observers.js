@@ -12,7 +12,7 @@ export default class Observers {
     let chat = new Chat(chatHtml)
     let found = false, student = '', tab = null;
     for (let studentQuestion of StudentQuestion.all){
-      if (!found && studentQuestion.chat.name === chat.name && studentQuestion.chat.question === chat.question){
+      if (!found && studentQuestion.chat.name === chat.name && studentQuestion.chat.timeOpened === chat.timeOpened){
         studentQuestion.reloadTracker(chat);
         found = !found;
         student = studentQuestion
