@@ -14,7 +14,7 @@ StudentQuestion.init()
 new Observers
 new KeyCommands
 setTimeout(()=>{new UpdateChecker
-}, 8000) // Shouldn't need to do this, options may need to be handled first as a promise prior to remaining code running
+}, 8000) // Shouldn't need to do this, options need to be handled first as a promise prior to remaining code running
 
 
 
