@@ -93,10 +93,51 @@
   cursor: pointer;
 }
 
-.update-notice p {
+#resource-popup{
+  z-index: 20;
+  position: fixed;
+  width: 33%;
+  top: 10%;
+  background-color: white;
+  height: 90%;
+}
 
+#resource-popup span{
+  position: relative;
+  float: right;
+  color: red;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#resource-table {
+  border-spacing: 10px;
+  border-collapse: separate;
+  text-align: center;
+}
+
+#add-resource{
+  top: 92%;
 }
 
 #js--region-main.site-main {
   overflow-y: hidden;
+}
+
+#new-resource-form  {
+  text-align: center;
+  border: 3px solid black;
+}
+
+#new-resource-form input {
+    border: 1px solid #BEBEBE;
+    padding: 7px;
+    margin-bottom: 10px;
+   /* font-size: 50%;*/
+}
+
+#new-resource-form .button {
+  border-radius: 0px;
+  border: none;
+  padding: 10px;
 }
