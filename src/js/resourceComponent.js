@@ -31,14 +31,15 @@ export default class ResourceComponent {
     )
   }
 
-  loadResourceForm(){
+  loadResourceForm(resource){
     let html = `
     <div>
       <form id="new-resource-form">
-      <h3>Name</h3> <br><input id="new-resource-name" type="text"><br>
-      <h3>Link</h3> <br><input id="new-resource-link" type="text"><br>
-      <h3>Description</h3> <br><input id="new-resource-desc" type="text"><br>
-      <h3>Type</h3> <br><input id="new-resource-type" type="text"><br>
+      <input id="new-resource-id" type="hidden" value="${resource ? resource.id : 0}">
+      <h3>Name</h3> <br><input id="new-resource-name" type="text" value="${resource ? resource.name : ''}"><br>
+      <h3>Link</h3> <br><input id="new-resource-link" type="text" value="${resource ? resource.link : ''}"><br>
+      <h3>Description</h3> <br><textarea rows="5" cols="27" id="new-resource-description">${resource ? resource.description : ''}</textarea><br>
+      <h3>Type</h3> <br><input id="new-resource-type" type="text" value="${resource ? resource.type : ''}"><br>
       <button 
         id="cancel-submit-resource"  
         class="button button--color-red"/> Cancel </button>
@@ -61,19 +62,13 @@ export default class ResourceComponent {
   handleSubmit(){
     let data = this.getFormData()
     data.lesson = {name: StudentQuestion.currentStudent.chat.lesson}
-    this.postResource(data)
+    data.resource.id ? null : this.postResource(data)
   }
 
   getFormData(){
-    const data = ["name", "link", "desc", "type"].map((d)=> document.querySelector(`#new-resource-${d}`).value)
-    return { 
-      resource: {
-        name: data[0],
-        link: data[1],
-        description: data[2],
-        type: data[3] 
-      }
-    }
+    let resource = {}
+    const data = ["id", "name", "link", "description", "type"].map((d)=> resource[d] = document.querySelector(`#new-resource-${d}`).value)
+    return { resource: resource}
   }
 
  cancelAddResource(){
@@ -137,7 +132,6 @@ export default class ResourceComponent {
 
   populateResources(resources){
     this.createTable()
-    debugger;
     let resourcesList;
     if (resources.length){
       resourcesList = resources.map((r) => this.createResourceElement(r)).join('');   
@@ -145,18 +139,48 @@ export default class ResourceComponent {
       resourcesList = `<tr>No resources for this lab have been added!<tr>`
     }
     document.querySelector('#resource-list').innerHTML = resourcesList;
-    document.querySelectorAll('#resource-list .resource a').forEach(el => { el.addEventListener('click', e => {
+    this.addResourceListeners()
+  }
+
+  addResourceListeners(){
+    this.addCopyListeners()
+    this.addEditListeners()
+    this.addDeleteListeners()
+  }
+
+  addCopyListeners(){
+    document.querySelectorAll('#resource-list .resource a').forEach(el => { 
+      el.addEventListener('click', e => {
+        e.preventDefault()
+        this.copyLink(e)
+      })
+    })
+  }
+
+  addEditListeners(){
+    document.querySelectorAll('#resource-list .edit-resource').forEach(el => { el.addEventListener('click', e => {
       e.preventDefault()
-      this.copyLink(e)
     })
   })
   }
 
+  addDeleteListeners(){
+    document.querySelectorAll('#resource-list .delete-resource').forEach(el => { el.addEventListener('click', e => {
+      e.preventDefault()
+      debugger;
+    })
+  })
+  }
+
+
+
   createResourceElement(resource){
+    var link = this.api + '/resources/' + resource.id
     return `<tr class='resource'>
         <td><a href='${resource.link}'>${resource.name}</a></td>
         <td>${resource.type.name}</td>
         <td>${resource.description}</td>
+        <td> <a class="edit-resource" href="${link}">Edit</a> - <a class="delete-resource" href="${link}">Delete</a></td>
       </tr>`
   }
 
@@ -166,9 +190,17 @@ export default class ResourceComponent {
       method: "POST",
       headers: {'content-type': 'application/json'},
       mode: 'cors'
-    }).then(response => response.json()).then((r)=> this.getResources()) 
-  }
+    }).then(response => {
+       if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error("There was an errrrrrror!");
+      }
+    })
+      .catch(e=>{ debugger;})
+      .then((r)=> this.getResources())
 
+  }
 
   copyLink(e){
     let ele = this.createCopyElement();

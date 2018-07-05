@@ -100,6 +100,7 @@
   top: 10%;
   background-color: white;
   height: 90%;
+  overflow: scroll;
 }
 
 #resource-popup span{
@@ -117,7 +118,9 @@
 }
 
 #add-resource{
-  top: 92%;
+  position: fixed;
+  width: inherit;
+  bottom: 0;
 }
 
 #js--region-main.site-main {
