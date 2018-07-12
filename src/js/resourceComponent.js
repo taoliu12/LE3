@@ -9,7 +9,7 @@ export default class ResourceComponent {
         if(!document.querySelector('#resource-popup')){
           this.loadResourcePopup()
         } else {
-          document.querySelector('#resource-popup').remove()
+          this.closePopup()
         }
 
       }
@@ -27,8 +27,14 @@ export default class ResourceComponent {
       this.loadResourceForm()
     )
     document.querySelector('#resource-popup span.close').addEventListener('click', ()=> 
-      document.querySelector('#resource-popup').remove()
+      this.closePopup()
     )
+  }
+
+
+  closePopup(){
+    document.querySelector('#resource-popup').remove()
+    this.resources = {}
   }
 
 
@@ -40,9 +46,9 @@ export default class ResourceComponent {
       <form id="new-resource-form">
       <input id="new-resource-id" type="hidden" value="${resource ? resource.id : 0}">
       <h3>Name</h3> <br><input id="new-resource-name" type="text" value="${resource ? resource.name : ''}"><br>
-      <h3>Link</h3> <br><input id="new-resource-link" type="text" value="${resource ? resource.link : ''}"><br>
+      <h3>Link</h3> <br><input ${resource ? "readonly" : ''} id="new-resource-link" type="text" value="${resource ? resource.link : ''}"><br>
       <h3>Description</h3> <br><textarea rows="5" cols="27" id="new-resource-description">${resource ? resource.description : ''}</textarea><br>
-      <h3>Type</h3> <br><input id="new-resource-type" type="text" value="${resource ? resource.type : ''}"><br>
+      <h3>Type</h3> <br><input id="new-resource-type" type="text" value="${resource ? resource.type.name : ''}"><br>
       <button 
         id="cancel-submit-resource"  
         class="button button--color-red"/> Cancel </button>
@@ -129,8 +135,16 @@ export default class ResourceComponent {
         return resp.json();
       })
       .then((resources) => {
+        this.resources = this.objectify(resources)
         this.populateResources(resources);
       });
+  }
+
+
+  objectify(resources){
+   return resources.reduce((obj, resource)=> {
+    return Object.assign({}, obj, {[resource.id]: resource})
+   }, {})
   }
 
   populateResources(resources){
@@ -162,7 +176,7 @@ export default class ResourceComponent {
 
   addEditListeners(){
     document.querySelectorAll('#resource-list .edit-resource').forEach(el => { el.addEventListener('click', e => {
-      e.preventDefault()
+      this.loadResourceForm(this.resources[e.target.dataset.id])
     })
   })
   }
@@ -179,19 +193,20 @@ export default class ResourceComponent {
 
 
   createResourceElement(resource){
-    var link = this.api + '/resources/' + resource.id
+     var link = this.api + '/resources/' + resource.id
     return `<tr class='resource'>
         <td><a href='${resource.link}'>${resource.name}</a></td>
         <td>${resource.type.name}</td>
         <td>${resource.description}</td>
-        <td> <a class="edit-resource" href="${link}">Edit</a> - <a class="delete-resource" href="${link}">Delete</a></td>
+        <td> <a data-id="${resource.id}" class="edit-resource" href="${link}">Edit</a> - <a class="delete-resource" href="${link}">Delete</a></td>
       </tr>`
   }
 
   postResource(data){
-    return fetch(this.api + '/resources', {
+    const id = +data.resource.id
+    return fetch(`${this.api}/resources${id ? '/' + id : ''}`, {
       body: JSON.stringify(data),
-      method: +data.id ? "PATCH" : "POST",
+      method: id ? "PATCH" : "POST",
       headers: {'content-type': 'application/json'},
       mode: 'cors'
     }).then(response => {
