@@ -31,7 +31,10 @@ export default class ResourceComponent {
     )
   }
 
+
+
   loadResourceForm(resource){
+    
     let html = `
     <div>
       <form id="new-resource-form">
@@ -62,7 +65,7 @@ export default class ResourceComponent {
   handleSubmit(){
     let data = this.getFormData()
     data.lesson = {name: StudentQuestion.currentStudent.chat.lesson}
-    data.resource.id ? null : this.postResource(data)
+    this.postResource(data)
   }
 
   getFormData(){
@@ -167,7 +170,8 @@ export default class ResourceComponent {
   addDeleteListeners(){
     document.querySelectorAll('#resource-list .delete-resource').forEach(el => { el.addEventListener('click', e => {
       e.preventDefault()
-      debugger;
+      fetch(e.target.href, {method: "DELETE"})
+      .then().then(()=> this.getResources())
     })
   })
   }
@@ -187,7 +191,7 @@ export default class ResourceComponent {
   postResource(data){
     return fetch(this.api + '/resources', {
       body: JSON.stringify(data),
-      method: "POST",
+      method: +data.id ? "PATCH" : "POST",
       headers: {'content-type': 'application/json'},
       mode: 'cors'
     }).then(response => {
