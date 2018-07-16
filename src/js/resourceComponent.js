@@ -55,7 +55,7 @@ export default class ResourceComponent {
       <input 
         id="submit-resource" 
         type="submit" 
-        value="Add Resource"
+        value="${resource ? "Edit" : "Add"} Resource"
         class="button button--color-blue" />
       <form>
     </div>
@@ -126,7 +126,7 @@ export default class ResourceComponent {
 
   getResources(){
     let lesson = StudentQuestion.currentStudent.chat.lesson;
-    let lessonSlug = lesson.split(" ").join("_")
+    let lessonSlug = lesson.replace(/[^\w\s]/, '').split(" ").join("_")
     fetch(`${this.api}/lesson/${lessonSlug}/resources`)
       .then((resp) => {
         if(!resp.ok){
