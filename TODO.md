@@ -1,12 +1,8 @@
 # Feature additions
 
-1. Dispatch mode: Users can hold shift while the page is loading to open the page in dispatch mode. This will cause ALL tabs in RA and Active to automatically open their tabs
+1. Text Autofill: Certain elements will fill automatically, such as the students name and zoom links
 
-2. Update notification: A small window will open when I update the app to notifiy users of an update when expertchat is openend. Will have minor update notes and link to a full patch note window 
-
-3. Text Autofill: Certain elements will fill automatically, such as the students name and zoom links
-
-4. Boilerplate text: For things that are often repeated, a boilerplate text window will appear.
+2. Boilerplate text: For things that are often repeated, a boilerplate text window will appear.
 
 
 
