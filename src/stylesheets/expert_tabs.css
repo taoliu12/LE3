@@ -105,12 +105,13 @@
 /*  box-shadow: 2px 3px #888888;*/
 }
 
-#resource-popup span{
+#resource-popup span.close{
   position: relative;
   float: right;
   color: red;
   font-weight: bold;
   cursor: pointer;
+  right: 6px;
 }
 
 #resource-table {
@@ -130,19 +131,38 @@
 }
 
 #new-resource-form  {
+  padding-top: 15px;
   text-align: center;
   border: 3px solid black;
 }
 
-#new-resource-form input {
+#new-resource-form input,  #new-resource-form select {
     border: 1px solid #BEBEBE;
     padding: 7px;
     margin-bottom: 10px;
    /* font-size: 50%;*/
 }
 
+#new-resource-form select { 
+  width: 183px;
+  border-radius: 0px
+}
+
 #new-resource-form .button {
   border-radius: 0px;
   border: none;
   padding: 10px;
+}
+
+#new-resource-errors {
+  margin-bottom: 15px;
+}
+
+#new-resource-errors p {
+  font-weight: bold;
+}
+
+#new-resource-errors ul {
+  list-style-type: circle;
+  color: red;
 }
