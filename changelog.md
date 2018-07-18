@@ -1,6 +1,7 @@
-## Version 0.1.12 Update Notes;
+## Version 0.2.00 Update Notes;
 
 - Changed tab matching to not match two questions by the same user with the same question name
+- More changes. You'll find out soon :)
 
 ## Version 0.1.11 Update Notes:
 
