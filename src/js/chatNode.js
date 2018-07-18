@@ -7,7 +7,8 @@ export default class Chat {
     this.contentBlock = nodeHtml.querySelector('.media-block__content')
     this.questionLink = nodeHtml.querySelector('span.util--padding-lm a').href
     this.timeOpened = nodeHtml.querySelector('time').getAttribute('datetime')
-    this.lesson = nodeHtml.querySelector(".heading.heading--level-6.heading--color-grey a").innerText.split(":")[1].trim()
+    this.lesson = nodeHtml.querySelector(".heading.heading--level-6.heading--color-grey a")
+                          .innerText.split(":").slice(1).join("").trim()
   }
 
   unrespondedBadge(){ 
