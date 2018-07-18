@@ -37,6 +37,13 @@ export default class ResourceComponent {
     this.resources = {}
   }
 
+  createSelectBox(resource){
+    const options =["Lecture", "StackOverflow", "Documentation", "Blog", "Help Center", "Other"].map(r => 
+      `<option ${resource && resource.type.name === r.toLowerCase() ? 'selected="selected"' : '' } value="${r}">${r}</option>`
+    ).join('')
+    return `<select id="new-resource-type">` + options + `</select>`
+  }
+
 
 
   loadResourceForm(resource){
@@ -44,11 +51,12 @@ export default class ResourceComponent {
     let html = `
     <div>
       <form id="new-resource-form">
+      <div id="new-resource-errors"></div>
       <input id="new-resource-id" type="hidden" value="${resource ? resource.id : 0}">
       <h3>Name</h3> <br><input id="new-resource-name" type="text" value="${resource ? resource.name : ''}"><br>
       <h3>Link</h3> <br><input ${resource ? "readonly" : ''} id="new-resource-link" type="text" value="${resource ? resource.link : ''}"><br>
       <h3>Description</h3> <br><textarea rows="5" cols="27" id="new-resource-description">${resource ? resource.description : ''}</textarea><br>
-      <h3>Type</h3> <br><input id="new-resource-type" type="text" value="${resource ? resource.type.name : ''}"><br>
+      <h3>Type</h3> <br>${this.createSelectBox(resource)}<br>
       <button 
         id="cancel-submit-resource"  
         class="button button--color-red"/> Cancel </button>
@@ -66,6 +74,14 @@ export default class ResourceComponent {
       this.handleSubmit()
     })
     this.cancelAddResource()
+  }
+
+  handleError(r){
+    const errors = r.errors.map(e =>
+      `<li>${e}</li>`
+    ).join('')
+
+    document.querySelector('#new-resource-errors').innerHTML =`<p>Please fix the following errors:</p><ul>${errors}</ul>`
   }
 
   handleSubmit(){
@@ -126,7 +142,7 @@ export default class ResourceComponent {
 
   getResources(){
     let lesson = StudentQuestion.currentStudent.chat.lesson;
-    let lessonSlug = lesson.replace(/[^\w\s]/, '').split(" ").join("_")
+    let lessonSlug = lesson.replace(/[^\w\s]/g, '').split(" ").join("_")
     fetch(`${this.api}/lesson/${lessonSlug}/resources`)
       .then((resp) => {
         if(!resp.ok){
@@ -204,20 +220,28 @@ export default class ResourceComponent {
 
   postResource(data){
     const id = +data.resource.id
+    let status;
     return fetch(`${this.api}/resources${id ? '/' + id : ''}`, {
       body: JSON.stringify(data),
       method: id ? "PATCH" : "POST",
       headers: {'content-type': 'application/json'},
       mode: 'cors'
     }).then(response => {
-       if (response.ok) {
+       // if (response.ok) {
+        status = response.status
         return response.json();
-      } else {
-        throw new Error("There was an errrrrrror!");
-      }
+      // } else {
+      //   throw response.json();
+      // }
     })
-      .catch(e=>{ debugger;})
-      .then((r)=> this.getResources())
+      .catch(e=>{ })
+      .then((r)=> {
+        if(status != 422){
+          this.getResources()
+        } else {
+          this.handleError(r)
+        }      
+      })
 
   }
 
