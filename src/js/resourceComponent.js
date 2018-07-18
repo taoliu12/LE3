@@ -1,9 +1,10 @@
 import StudentQuestion from './studentQuestion'
+import {apiLinks} from './globals'
 
 export default class ResourceComponent {
 
   constructor(){
-    this.api = "http://localhost:3005"
+    this.api = apiLinks.development
     document.addEventListener("keydown", (e) => {
       if (e.metaKey  &&  e.altKey  &&  e.code === 'KeyR') {
         if(!document.querySelector('#resource-popup')){
@@ -152,7 +153,7 @@ export default class ResourceComponent {
       })
       .then((resources) => {
         this.resources = this.objectify(resources)
-        this.populateResources(resources);
+        this.populateResources(resources, lessonSlug);
       });
   }
 
@@ -163,11 +164,11 @@ export default class ResourceComponent {
    }, {})
   }
 
-  populateResources(resources){
+  populateResources(resources, lessonSlug){
     this.createTable()
     let resourcesList;
     if (resources.length){
-      resourcesList = resources.map((r) => this.createResourceElement(r)).join('');   
+      resourcesList = resources.map((r) => this.createResourceElement(r, lessonSlug)).join('');   
     } else {
       resourcesList = `<tr>No resources for this lab have been added!<tr>`
     }
@@ -185,7 +186,14 @@ export default class ResourceComponent {
     document.querySelectorAll('#resource-list .resource a').forEach(el => { 
       el.addEventListener('click', e => {
         e.preventDefault()
-        this.copyLink(e)
+        const desc = this.resources[e.target.dataset.id].description
+        const link = e.target.href
+        if(e.shiftKey){
+          const text = `${desc} ${link}`
+          this.copyText(text)
+        } else {
+          this.copyText(link)
+        }
       })
     })
   }
@@ -208,10 +216,10 @@ export default class ResourceComponent {
 
 
 
-  createResourceElement(resource){
-     var link = this.api + '/resources/' + resource.id
+  createResourceElement(resource, lessonSlug){
+     var link = `${this.api}/lesson/${lessonSlug}/resources/${resource.id}`
     return `<tr class='resource'>
-        <td><a href='${resource.link}'>${resource.name}</a></td>
+        <td><a data-id="${resource.id}" href='${resource.link}'>${resource.name}</a></td>
         <td>${resource.type.name}</td>
         <td>${resource.description}</td>
         <td> <a data-id="${resource.id}" class="edit-resource" href="${link}">Edit</a> - <a class="delete-resource" href="${link}">Delete</a></td>
@@ -245,9 +253,9 @@ export default class ResourceComponent {
 
   }
 
-  copyLink(e){
+  copyText(text){
     let ele = this.createCopyElement();
-    ele.value = e.target.href
+    ele.value = text;
 
     document.body.appendChild(ele);
     ele.select();
