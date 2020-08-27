@@ -8,7 +8,7 @@
   "content_scripts": [
     {
       "run_at": "document_idle",
-      "matches": ["https://learn.co/expert-chat"],
+      "matches": ["https://learn.co/expert-chat/online-software-engineering-bootcamp"],
       "js": ["bundle.js"],
       "css": ["src/stylesheets/expert_tabs.css"]
     }
